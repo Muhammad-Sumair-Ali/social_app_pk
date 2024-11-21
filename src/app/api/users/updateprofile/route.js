@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { User } from "@/models/user.model"; // Import your User model
-import { uploadOnCloudinary } from "@/utils/constants"; // Cloudinary upload utility
+import { uploadOnCloudinary } from "@/utils/cloudinary"; // Cloudinary upload utility
 
 export async function POST(req) {
   try {

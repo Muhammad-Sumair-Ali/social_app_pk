@@ -1,7 +1,8 @@
-import { connectToDB } from "../../../utils/db";
-import { Post } from "../../../models/Post";
+import { connectDB } from "@/db/index";
+import { Post } from "@/models/post.model";
 
 export async function POST(request) {
+  await connectDB();
   const { title, description, imageUrl } = await request.json();
 
   if (!title || !description) {
@@ -12,7 +13,6 @@ export async function POST(request) {
   }
 
   try {
-    await connectToDB();
 
     const newPost = new Post({
       title,
