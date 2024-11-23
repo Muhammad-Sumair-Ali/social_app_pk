@@ -10,7 +10,7 @@ const PostSchema = new mongoose.Schema({
     required: true,
   },
   image: {
-    type: String, // URL for the image (Cloudinary)
+    type: String, 
   },
   createdBy: {
     type: mongoose.Schema.Types.ObjectId,

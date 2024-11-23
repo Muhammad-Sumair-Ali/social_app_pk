@@ -1,54 +1,29 @@
 'use client'
-import Image from 'next/image'
-import React, { useState } from 'react'
-import axios from 'axios'
+import React from 'react'
+import { useAuthentication } from '@/hooks/useAuthentication'
+import Link from 'next/link';
 
 const Login = () => {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [error, setError] = useState(null)
-  const [loading, setLoading] = useState(false)
 
-  const handleSubmit = async (e) => {
-    e.preventDefault()
+  const { register, handleSubmit, login, errors, loading } = useAuthentication();
 
-    if (!email || !password) {
-      setError('Email and password are required')
-      return
-    }
-
-    setLoading(true)
-    setError(null)
-
-    try {
-      const response = await axios.post('/api/auth/login', {
-        email,
-        password
-      })
-
-      if (response.status === 201) {
-        console.log('User Login successfully', response.data)
-      }
-    } catch (error) {
-      console.error('Login failed:', error.response?.data || error.message)
-      setError('Login failed. Please try again.')
-    } finally {
-      setLoading(false)
-    }
-  }
+  
+  const onSubmit = (data) => {
+    login(data); 
+  };
 
   return (
     <>
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-          {/* <Image alt="" src="htsa" className="mx-auto h-10 w-auto" /> */}
+        
           <h2 className="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900">
           Login a your account
           </h2>
         </div>
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             <div>
               <label htmlFor="email" className="block text-sm/6 font-medium text-gray-900">
                 Email address
@@ -60,11 +35,11 @@ const Login = () => {
                   type="email"
                   required
                   autoComplete="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  {...register('email', { required: 'Email is required' })}
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"
                 />
               </div>
+              {errors.email && <p className="text-red-500">{errors.email.message}</p>}
             </div>
 
             <div>
@@ -84,17 +59,14 @@ const Login = () => {
                   name="password"
                   type="password"
                   required
-                  autoComplete="current-password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  {...register('password', { required: 'Password is required' })}
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"
                 />
               </div>
+             
             </div>
 
-            {error && (
-              <div className="text-red-500 text-sm mt-2">{error}</div>
-            )}
+            {errors.password && <p className="text-red-500">{errors.password.message}</p>}
 
             <div>
               <button
@@ -109,9 +81,9 @@ const Login = () => {
 
           <p className="mt-10 text-center text-sm/6 text-gray-500">
             Not a member?{' '}
-            <a href="#" className="font-semibold text-indigo-600 hover:text-indigo-500">
-              Start a 14 day free trial
-            </a>
+            <Link href="/register" className="font-semibold text-indigo-600 hover:text-indigo-500">
+              Dont Have an account
+            </Link>
           </p>
         </div>
       </div>

@@ -22,8 +22,10 @@ const UserSchema = new mongoose.Schema({
     required: true,
   },
   friends: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+  sentRequests: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }], // Sent requests
+  receivedRequests: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }], // Received requests
   profilePicture: {
-    type: String, // URL to the profile picture (Cloudinary)
+    type: String, 
   },
 });
 

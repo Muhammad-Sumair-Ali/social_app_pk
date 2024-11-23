@@ -14,13 +14,13 @@ export const uploadOnCloudinary = async (localFilePath) => {
       return null;
     }
     const response = await cloudinary.uploader.upload(localFilePath, {
-      resource_type: "auto", // Auto-detect file type (image, video, etc.)
-      folder: "socialapp", // Cloudinary folder for organization
+      resource_type: "auto", 
+      folder: "socialapp", // Cloudinary folder for images save temp
     });
-    fs.unlinkSync(localFilePath); // Delete local file after upload
+    fs.unlinkSync(localFilePath); 
     return response;
   } catch (error) {
-    fs.unlinkSync(localFilePath); // If error occurs, delete the local file
+    fs.unlinkSync(localFilePath); 
     console.log(`Error uploading file to Cloudinary: ${error}`);
     return null;
   }
