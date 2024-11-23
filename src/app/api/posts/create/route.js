@@ -1,4 +1,4 @@
-import { connectDB } from "@/db/index";
+import { connectDB } from "@/db";
 import { Post } from "@/models/post.model";
 
 export async function POST(request) {

@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { User } from "@/src/models/user.model";
+import { User } from "@/models/user.model";
 
 export async function POST(request, { params }) {
   const { id } = params;
