@@ -12,7 +12,7 @@ export async function POST(request) {
     if (!email || !password) {
       return new NextResponse(
         JSON.stringify({ error: "Please provide email and password" }),
-        { status: 400 } 
+        { status: 400 }
       );
     }
 
@@ -22,43 +22,38 @@ export async function POST(request) {
     if (!user) {
       return new NextResponse(
         JSON.stringify({ error: "User Not Found" }),
-        { status: 404 } 
+        { status: 404 }
       );
     }
 
-    
     const isPasswordValid = await user.matchPassword(password);
 
     if (!isPasswordValid) {
       return new NextResponse(
         JSON.stringify({ error: "Invalid credentials" }),
-        { status: 401 } 
+        { status: 401 }
       );
     }
-
-
+    
+    // Generate JWT token
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-      expiresIn: "7d",
+      expiresIn: "1d",
     });
 
-    
+    const loggedInUser = await User.findById(user._id).select("-password")
+
     const response = NextResponse.json({
       message: "Login successful",
-      user: {
-        _id: user._id,
-        name: user.name,
-        email: user.email,
-        friends: user.friends || [],
-    },
+      user: loggedInUser,
       token,
     }, { status: 200 });
 
-    
+    // Set token in cookie
     response.cookies.set("token", token, {
-      httpOnly: true, 
-      secure: process.env.NODE_ENV === "production", 
-      path: "/", 
-      maxAge: 7 * 24 * 60 * 60,
+      httpOnly: true, // Set to true for better security
+      secure: process.env.NODE_ENV === "production", // Ensure secure flag in production
+      path: "/",
+      maxAge: 7 * 24 * 60 * 60, // 7 days
     });
 
     return response;
@@ -66,7 +61,7 @@ export async function POST(request) {
     console.error("Error logging in:", error);
     return new NextResponse(
       JSON.stringify({ error: "Error logging in, please try again later." }),
-      { status: 500 } 
+      { status: 500 }
     );
   }
 }

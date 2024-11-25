@@ -1,74 +1,73 @@
-'use client'
-
-import { usersApi } from "@/helper/apiRoutes";
-import { useState } from "react";
-import axios from "axios";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { toast } from 'react-hot-toast';
+import { usersApi } from '@/helper/apiRoutes';
 
 const FriendRequestButton = ({ userId, currentUserId, isFriend, hasSentRequest }) => {
-  const [loading, setLoading] = useState(false);
-  const [status, setStatus] = useState(hasSentRequest ? "Request Sent" : isFriend ? "Friends" : "Send Request");
+  const [friendStatus, setFriendStatus] = useState('');
 
-  const sendRequest = async () => {
-    setLoading(true);
+  // Determine the initial status based on props
+  useEffect(() => {
+    if (isFriend) {
+      setFriendStatus('friends');
+    } else if (hasSentRequest) {
+      setFriendStatus('sentRequest');
+    } else {
+      setFriendStatus('noRequest');
+    }
+  }, [isFriend, hasSentRequest]);
+
+  // Function to handle sending a friend request
+  const sendFriendRequest = async () => {
     try {
-      const response = await axios.post(`${usersApi}/${userId}/follow`, {
-        currentUserId
+      const response = await axios.post(`${usersApi}/${userId}`, {
+        currentUserId,
       });
-      setStatus(response.data.message);  // Update status with response message
+      setFriendStatus('sentRequest');
+      toast.success(response.data.message || 'Friend request sent');
     } catch (error) {
-      console.error(error.response?.data?.error || "Something went wrong");
-      setStatus("Error");
-    } finally {
-      setLoading(false);
+      toast.error(error.response?.data?.error || 'Failed to send request');
     }
   };
 
-  const acceptRequest = async () => {
-    setLoading(true);
+  // Function to handle canceling a friend request
+  const cancelFriendRequest = async () => {
     try {
-      const response = await axios.put(`${usersApi}/${userId}/follow`, {
-        currentUserId
+      const response = await axios.delete(`${usersApi}/${userId}`, {
+        data: { currentUserId },
       });
-      setStatus(response.data.message);
+      setFriendStatus('noRequest');
+      toast.success(response.data.message || 'Friend request canceled');
     } catch (error) {
-      console.error(error.response?.data?.error || "Something went wrong");
-      setStatus("Error");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const declineRequest = async () => {
-    setLoading(true);
-    try {
-      const response = await axios.delete(`${usersApi}/${userId}/follow`, {
-        data: { currentUserId }
-      });
-      setStatus(response.data.message);
-    } catch (error) {
-      console.error(error.response?.data?.error || "Something went wrong");
-      setStatus("Error");
-    } finally {
-      setLoading(false);
+      toast.error(error.response?.data?.error || 'Failed to cancel request');
     }
   };
 
   return (
     <div>
-      <button 
-        onClick={sendRequest} 
-        disabled={loading || status === "Request Sent"}
-      >
-        {status === "Send Request" ? "Send Friend Request" : status}
-      </button>
-      {isFriend && (
-        <button onClick={acceptRequest} disabled={loading}>
-          Accept Request
+      {/* Render buttons based on the current friend status */}
+      {friendStatus === 'friends' && (
+        <button
+          className="bg-green-500 text-white text-xs px-2 py-2 rounded-lg cursor-not-allowed"
+          disabled
+        >
+          Friends
         </button>
       )}
-      {hasSentRequest && (
-        <button onClick={declineRequest} disabled={loading}>
-          Decline Request
+      {friendStatus === 'sentRequest' && (
+        <button
+          className="bg-red-500 text-white text-xs px-2 py-2 rounded-lg hover:bg-red-600 transition"
+          onClick={cancelFriendRequest}
+        >
+          Cancel Request
+        </button>
+      )}
+      {friendStatus === 'noRequest' && (
+        <button
+          className="bg-indigo-600 text-white text-xs px-2 py-2 rounded-lg hover:bg-indigo-700 transition"
+          onClick={sendFriendRequest}
+        >
+          Add Friend
         </button>
       )}
     </div>
@@ -76,12 +75,3 @@ const FriendRequestButton = ({ userId, currentUserId, isFriend, hasSentRequest }
 };
 
 export default FriendRequestButton;
-
-
-// TODO : things for this FriendRequestButton accepting Props 
-{/* <FriendRequestButton
-  userId="user123"          // Target user
-  currentUserId="user456"   // Logged-in user performing the action
-  isFriend={false}          // Not friends
-  hasSentRequest={false}    // No request sent yet
-/>  */}

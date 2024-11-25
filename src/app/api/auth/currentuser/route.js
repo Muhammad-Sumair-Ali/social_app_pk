@@ -1,27 +1,40 @@
 import jwt from "jsonwebtoken";
+import { User } from "@/models/user.model"; 
 
-// Get Current User
 export async function GET(request) {
   try {
     const token = request.cookies.get("token")?.value;
-    
-    if (!token) { 
-      console.error("Token not found in cookies");
+    if (!token) {
       return new Response(
         JSON.stringify({ error: "Not logged in" }),
         { status: 401 }
       );
     }
-    
+
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    console.log("Token Decoded:", decoded);
-  
+
+    if (!decoded || !decoded.id) {
+      return new Response(
+        JSON.stringify({ error: "Invalid token" }),
+        { status: 401 }
+      );
+    }
+
+    const user = await User.findById(decoded.id);
+
+    if (!user) {
+      return new Response(
+        JSON.stringify({ error: "User not found" }),
+        { status: 404 }
+      );
+    }
+
     return new Response(
-      JSON.stringify({ userId: decoded.id }),
+      JSON.stringify({ user: user, token:token || "" } ),
       { status: 200 }
     );
   } catch (error) {
-    console.error("Error in token verification:", error.message);
+    
     return new Response(
       JSON.stringify({ error: error.message || "Invalid token" }),
       { status: 401 }

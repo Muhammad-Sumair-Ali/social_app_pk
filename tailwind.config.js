@@ -8,8 +8,10 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
+        primary: "#1877F2", // Facebook blue
+        secondary: "#242526", // Modern dark mode
+        light: "#F0F2F5", // Light background
+        accent: "#42b72a", // Green for active buttons
       },
     },
   },

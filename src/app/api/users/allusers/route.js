@@ -15,6 +15,8 @@ export async function GET(){
                 { status: 401 }
               );
         }
+
+        
         return new Response(
             JSON.stringify({
                  message: "All Users founded",

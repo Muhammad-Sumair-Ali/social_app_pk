@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
+import { authApi } from '@/helper/apiRoutes';
 
 const LogoutButton = () => {
   const router = useRouter();
@@ -11,7 +12,7 @@ const LogoutButton = () => {
      
       localStorage.removeItem('token');
       
-      await axios.get('/api/auth/logout');
+      await axios.post(`${authApi}/logout`);
       
       router.push('/login');
     } catch (error) {

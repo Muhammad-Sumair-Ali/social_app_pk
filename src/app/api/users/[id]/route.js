@@ -1,8 +1,14 @@
 import { NextResponse } from "next/server";
 import { User } from "@/models/user.model";
 
+
+// Add friend request
 export async function POST(request, { params }) {
-  const { id } = params;
+
+  const url = new URL(request.url);
+  const id = url.pathname.split('/').pop();
+
+  // const { id } = params;
   const { currentUserId } = await request.json();
 
   const userToFollow = await User.findById(id);
@@ -28,8 +34,15 @@ export async function POST(request, { params }) {
   return NextResponse.json({ message: "Friend request sent" });
 }
 
+
+
+
+// Accept request 
 export async function PUT(request, { params }) {
-  const { id } = params;
+  const url = new URL(request.url);
+  const id = url.pathname.split('/').pop();
+
+
   const { currentUserId } = await request.json();
 
   const userToAccept = await User.findById(id);
@@ -59,6 +72,8 @@ export async function PUT(request, { params }) {
   return NextResponse.json({ message: "Friend request accepted" });
 }
 
+
+// Decline request
 export async function DELETE(request, { params }) {
   const { id } = params;
   const { currentUserId } = await request.json();
@@ -81,4 +96,36 @@ export async function DELETE(request, { params }) {
   await userToDecline.save();
 
   return NextResponse.json({ message: "Friend request declined" });
+}
+
+
+
+
+export async function GET(request, res) {
+  try {
+    
+    const url = new URL(request.url);
+    const id = url.pathname.split('/').pop();
+  
+    // const { id } = params;
+    // const { currentUserId } = await request.json();
+  
+    const usersReqs = await User.findById(id);
+    // const currentUser = await User.findById(currentUserId);
+  
+    if (!usersReqs) {
+      return NextResponse.json({ error: "User not found" }, { status: 404 });
+    }
+  
+  
+    return NextResponse.json({ 
+     message: "user get success",
+      user: usersReqs });
+  } catch (error) {
+    return NextResponse.json(
+      { message: "Error fetching user requests.", error: error.message },
+      { status: 500 }
+    );
+  }
+
 }

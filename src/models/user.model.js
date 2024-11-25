@@ -22,12 +22,22 @@ const UserSchema = new mongoose.Schema({
     required: true,
   },
   friends: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
-  sentRequests: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }], // Sent requests
-  receivedRequests: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }], // Received requests
+  sentRequests: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }], 
+  receivedRequests: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }], 
+
   profilePicture: {
-    type: String, 
+    type: String,
+    
+  },
+
+  
+  role: {
+    type: String,
+    enum: ["user", "admin"], // Allowed values
+    default: "user", // Default role is 'user'
   },
 });
+
 
 UserSchema.pre("save", async function (next) {
   if (this.isModified("password")) {
@@ -35,6 +45,7 @@ UserSchema.pre("save", async function (next) {
   }
   next();
 });
+
 
 UserSchema.methods.matchPassword = async function (password) {
   return await bcrypt.compare(password, this.password);

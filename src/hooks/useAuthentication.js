@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-hot-toast';
 import { useForm } from 'react-hook-form';
@@ -8,6 +8,7 @@ import { authApi } from "@/helper/apiRoutes";
 export function useAuthentication() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [currentUserLoggedIn, setCurrentUserLoggedIn] = useState({});
 
   const { register, handleSubmit, formState: { errors } } = useForm();
 
@@ -19,6 +20,7 @@ export function useAuthentication() {
       if (response.data.token) {
         toast.success('Login successful!');
         document.cookie = `token=${response.data.token}; path=/; max-age=86400`;
+        // document.cookie = `user=${JSON.stringify(response.data.user)}`;
         router.push('/');
       }
     } catch (error) {
@@ -35,7 +37,7 @@ export function useAuthentication() {
       if (response.data.token) {
         toast.success('user register successfull!');
         // document.cookie = `token=${response.data.token}; path=/; max-age=86400`;
-        router.push('/login');
+        router.push('/auth/login');
       }
     } catch (error) {
       toast.error(error.response?.data?.error || 'register failed');
@@ -47,12 +49,14 @@ export function useAuthentication() {
   const currentUser = async () => {
     try {
       const response = await api.get(`${authApi}/currentuser`);
-      console.log("CurrentUser LoggedIn => " ,response)
+      // console.log("CurrentUser LoggedIn => " ,response)
+      // setCurrentUserLoggedIn(response.data)
       return response;
     } catch (error) {
       toast.error(error.response?.data?.error || 'User not logged in');
     }
   };
+
   const logoutUser = async () => {
     try {
       const response = await api.post(`${authApi}/logout`);
@@ -60,12 +64,14 @@ export function useAuthentication() {
         toast.success('Logged out successfully');
        
         document.cookie = "token=; path=/; max-age=0";
-        router.push("/login"); 
+        router.push("/auth/login"); 
       }
     } catch (error) {
       toast.error(error.response?.data?.error || 'Logout failed');
     }
   };
+
+  
 
   return {
     register,
@@ -75,6 +81,8 @@ export function useAuthentication() {
     logoutUser,
     errors,
     loading,
-    currentUser
+    currentUser,
+    currentUserLoggedIn,
+    setCurrentUserLoggedIn
   };
 }
