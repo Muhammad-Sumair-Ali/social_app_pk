@@ -1,7 +1,10 @@
 import jwt from "jsonwebtoken";
 import { User } from "@/models/user.model"; 
+import connectDB from "@/db";
 
 export async function GET(request) {
+  connectDB()
+
   try {
     const token = request.cookies.get("token")?.value;
     if (!token) {
@@ -11,7 +14,7 @@ export async function GET(request) {
       );
     }
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, process.env.NEXT_PUBLIC_JWT_SECRET);
 
     if (!decoded || !decoded.id) {
       return new Response(

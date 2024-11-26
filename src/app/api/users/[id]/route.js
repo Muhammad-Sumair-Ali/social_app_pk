@@ -1,10 +1,11 @@
 import { NextResponse } from "next/server";
 import { User } from "@/models/user.model";
+import connectDB from "@/db";
 
 
 // Add friend request
 export async function POST(request, { params }) {
-
+  connectDB()
   const url = new URL(request.url);
   const id = url.pathname.split('/').pop();
 
@@ -39,6 +40,8 @@ export async function POST(request, { params }) {
 
 // Accept request 
 export async function PUT(request, { params }) {
+  connectDB()
+
   const url = new URL(request.url);
   const id = url.pathname.split('/').pop();
 
@@ -75,7 +78,11 @@ export async function PUT(request, { params }) {
 
 // Decline request
 export async function DELETE(request, { params }) {
-  const { id } = params;
+  connectDB()
+
+  const url = new URL(request.url);
+  const id = url.pathname.split('/').pop();
+
   const { currentUserId } = await request.json();
 
   const userToDecline = await User.findById(id);
@@ -102,6 +109,8 @@ export async function DELETE(request, { params }) {
 
 
 export async function GET(request, res) {
+  connectDB()
+
   try {
     
     const url = new URL(request.url);

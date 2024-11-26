@@ -1,7 +1,10 @@
 import { NextResponse } from "next/server";
 import { User } from "@/models/user.model";
+import connectDB from "@/db";
 
 export async function GET({ params }) {
+  connectDB()
+
   const { id } = params;
 
   const user = await User.findById(id);

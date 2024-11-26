@@ -1,10 +1,11 @@
+
 import connectDB from "@/db";
 import { User } from "@/models/user.model";
 import jwt from "jsonwebtoken";
 import { NextResponse } from "next/server";
 
 export async function POST(request) {
-  await connectDB(); 
+   connectDB(); 
   try {
     const { email, password } = await request.json();
 
@@ -36,7 +37,7 @@ export async function POST(request) {
     }
     
     // Generate JWT token
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+    const token = jwt.sign({ id: user._id }, process.env.NEXT_PUBLIC_JWT_SECRET, {
       expiresIn: "1d",
     });
 
@@ -50,11 +51,13 @@ export async function POST(request) {
 
     // Set token in cookie
     response.cookies.set("token", token, {
-      httpOnly: true, // Set to true for better security
-      secure: process.env.NODE_ENV === "production", // Ensure secure flag in production
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production", 
+      sameSite: "None",
       path: "/",
-      maxAge: 7 * 24 * 60 * 60, // 7 days
+      maxAge: 7 * 24 * 60 * 60, 
     });
+    
 
     return response;
   } catch (error) {
