@@ -48,9 +48,9 @@ const Login = () => {
                   Password
                 </label>
                 <div className="text-sm">
-                  <a href="#" className="font-semibold text-indigo-600 hover:text-indigo-500">
+                  <b  className="font-semibold text-indigo-600 hover:text-indigo-500">
                     Forgot password?
-                  </a>
+                  </b>
                 </div>
               </div>
               <div className="mt-2">
@@ -66,13 +66,16 @@ const Login = () => {
              
             </div>
 
-            {errors.password && <p className="text-red-500">{errors.password.message}</p>}
+            {errors?.password && <p className="text-red-500">{errors?.password.message}</p>}
 
             <div>
               <button
                 type="submit"
                 disabled={loading}
-                className={`flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
+                className={`flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 
+                  text-sm/6 font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline
+                  focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600
+                   ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
               >
                 {loading ? 'Login...' : 'Login Now'}
               </button>

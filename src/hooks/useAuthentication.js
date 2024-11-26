@@ -4,7 +4,7 @@ import { toast } from 'react-hot-toast';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
 
-i
+
 
 export function useAuthentication() {
   const router = useRouter();
