@@ -10,7 +10,7 @@ export function useUsers(id) {
   
     const currentUser = async () => {
       try {
-        const response = await axios.get(`/api/auth/currentuser`);
+        const response = await axios.get('/api/auth/currentuser');
         console.log("CurrentUser LoggedIn =>", response.data);
         
     
@@ -25,25 +25,14 @@ export function useUsers(id) {
       const token = Cookies.get("token");
       try {
     
-        // if (!token) {
-        //   throw new Error('No token found');
-        // }
-    
-        const response = await axios.get(`/api/users/allusers`, {
+        const response = await axios.get('/api/users/allusers', {
           headers: {
             Authorization: `Bearer ${ user.token || token}`,
           },
         });
     
-       
-        // const suggestingSomeFriends = response.data.users?.filter(
-        //   (friend) => friend.email != user?.user?.email 
-        // );
-    
         console.log("All Users Fetched =>", response.data.users);
-        // setData(suggestingSomeFriends); 
         setData(response.data.users); 
-    
     
       } catch (error) {
         console.log("Error fetching all users:", error);

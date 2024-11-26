@@ -1,11 +1,21 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import Link from 'next/link';
 import SuggestingUsers from './reuseable/SuggestingUsers';
 import ReceivedRequest from './reuseable/ReceivedRequest';
+import { useAuth } from '@/context/AuthContext';
+import { useRouter } from 'next/navigation';
 
 const HomePage = () => {
+  const {user}= useAuth()
+ const router = useRouter()
+
+  useEffect(() => {
+  if (!user) {
+    router.push("/auth/login")
+  }
+  }, [])
   return (
     <>
     <div className="bg-gray-100 min-h-screen pt-10">

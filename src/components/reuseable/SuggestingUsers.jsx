@@ -35,7 +35,7 @@ const SuggestingUsers = () => {
               <div>
                 <h3 className="font-medium text-sm text-gray-800">{friend.name}</h3>
               </div>
-            <FriendRequestButton
+              <FriendRequestButton
               userId={friend._id} // Target user's ID
               currentUserId={user?.user?._id} // Logged-in user's ID
               isFriend={user?.user?.friends?.includes(friend._id)} // Check if they're already friends
