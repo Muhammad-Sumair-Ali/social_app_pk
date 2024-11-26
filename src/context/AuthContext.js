@@ -21,7 +21,7 @@ export const AuthProvider = ({ children }) => {
                 const response = await fetch(`/api/auth/currentuser`, {
                     method: 'GET',
                     headers: {
-                        'Authorization': `Bearer ${token}`,
+                        'Authorization': `Bearer ${token || user?.token}`,
                         'Content-Type': 'application/json'
                     },
                 });

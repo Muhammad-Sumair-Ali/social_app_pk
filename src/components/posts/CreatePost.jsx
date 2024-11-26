@@ -1,5 +1,4 @@
 'use client'
-import { postsApi } from '@/helper/apiRoutes';
 import axios from 'axios';
 import { useState } from 'react';
 
@@ -14,7 +13,7 @@ const CreatePost = () => {
     const postData = { title, description, imageUrl };
 
     try {
-      const response = await axios.post(`${postsApi}/create` , postData);
+      const response = await axios.post(`/api/posts/create` , postData);
 
       if (response.status === 201) {
         console.log("Post created:", response.data);

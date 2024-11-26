@@ -4,7 +4,7 @@ import { User } from "@/models/user.model";
 
 
 export async function GET(){
-    await connectDB()
+     connectDB()
     try {
         const res = await User.find()
         if (!res) {
@@ -26,8 +26,8 @@ export async function GET(){
           );
     } catch (error) {
         return new Response(
-          JSON.stringify({ error: "users not found" }),
-          { status: 404 }
+          JSON.stringify({ error: "Failed TO find  users " }),
+          { status: 500 }
         );
       }
 }

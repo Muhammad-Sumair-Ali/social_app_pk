@@ -22,8 +22,8 @@ export function useUsers(id) {
     };
   
     const getAllUsers = async () => {
+      const token = Cookies.get("token");
       try {
-        const token = Cookies.get("token");
     
         // if (!token) {
         //   throw new Error('No token found');

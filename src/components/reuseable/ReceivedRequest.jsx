@@ -22,7 +22,7 @@ const ReceivedRequest = () => {
 <div>
      
       {users?.length > 0 ? (
-        users.map((friend) => (
+        users?.map((friend) => (
             <div
             key={friend._id}
             className="flex items-center justify-between mb-4 flex-col gap-2">

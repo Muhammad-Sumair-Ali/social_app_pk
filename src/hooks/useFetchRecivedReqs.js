@@ -1,7 +1,6 @@
 'use client'
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { usersApi } from '@/helper/apiRoutes';
 import Cookies from 'js-cookie';
 import { useAuth } from '@/context/AuthContext';
 
