@@ -3,7 +3,7 @@ import { User } from "@/models/user.model";
 import jwt from "jsonwebtoken";
 
 export async function POST(request) {
-   connectDB()
+  await connectDB()
   const { name, email, password } = await request.json();
 
   if (!name || !email || !password) {

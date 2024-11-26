@@ -2,7 +2,7 @@ import connectDB from "@/db";
 import { NextResponse } from "next/server";
 
 export async function POST() {
-  connectDB()
+  await connectDB()
 
   const response = NextResponse.json({ message: "Logout successfull" });
   response.cookies.set("token", "", {

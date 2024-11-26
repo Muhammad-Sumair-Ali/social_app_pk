@@ -4,7 +4,7 @@ import { User } from "@/models/user.model";
 
 
 export async function GET(){
-     connectDB()
+  await connectDB()
     try {
         const res = await User.find()
         if (!res) {

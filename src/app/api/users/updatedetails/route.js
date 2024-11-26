@@ -1,8 +1,10 @@
+import connectDB from "@/db";
 import { User } from "@/models/user.model";
 import { NextResponse } from "next/server";
 
 
 export async function PUT(request) {
+  await connectDB()
   const { id, name, bio } = await request.json();
 
   const updatedUser = await User.findByIdAndUpdate(

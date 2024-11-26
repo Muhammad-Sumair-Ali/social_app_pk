@@ -5,7 +5,7 @@ import connectDB from "@/db";
 
 // Add friend request
 export async function POST(request, { params }) {
-  connectDB()
+  await connectDB()
   const url = new URL(request.url);
   const id = url.pathname.split('/').pop();
 
@@ -40,7 +40,7 @@ export async function POST(request, { params }) {
 
 // Accept request 
 export async function PUT(request, { params }) {
-  connectDB()
+  await connectDB()
 
   const url = new URL(request.url);
   const id = url.pathname.split('/').pop();
@@ -78,7 +78,7 @@ export async function PUT(request, { params }) {
 
 // Decline request
 export async function DELETE(request, { params }) {
-  connectDB()
+  await connectDB()
 
   const url = new URL(request.url);
   const id = url.pathname.split('/').pop();
@@ -109,7 +109,7 @@ export async function DELETE(request, { params }) {
 
 
 export async function GET(request, res) {
-  connectDB()
+  await connectDB()
 
   try {
     

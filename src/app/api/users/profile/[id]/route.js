@@ -3,7 +3,7 @@ import { User } from "@/models/user.model";
 import connectDB from "@/db";
 
 export async function GET({ params }) {
-  connectDB()
+  await connectDB()
 
   const { id } = params;
 

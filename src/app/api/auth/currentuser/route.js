@@ -3,7 +3,7 @@ import { User } from "@/models/user.model";
 import connectDB from "@/db";
 
 export async function GET(request) {
-  connectDB()
+ await connectDB()
 
   try {
     const token = request.cookies.get("token")?.value;

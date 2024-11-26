@@ -1,8 +1,11 @@
 import { NextResponse } from "next/server";
 import { User } from "@/models/user.model"; // Import your User model
 import { uploadOnCloudinary } from "@/utils/cloudinary"; // Cloudinary upload utility
+import connectDB from "@/db";
 
 export async function POST(req) {
+  await connectDB()
+
   try {
     const formData = await req.formData(); // Retrieve form data
     const userId = formData.get("userId"); // Get userId from the form data
