@@ -1,7 +1,9 @@
+'use client'
+
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
-import { usersApi } from '@/helper/apiRoutes';
+
 
 const FriendRequestButton = ({ userId, currentUserId, isFriend, hasSentRequest }) => {
   const [friendStatus, setFriendStatus] = useState('');
@@ -20,7 +22,7 @@ const FriendRequestButton = ({ userId, currentUserId, isFriend, hasSentRequest }
   // Function to handle sending a friend request
   const sendFriendRequest = async () => {
     try {
-      const response = await axios.post(`${usersApi}/${userId}`, {
+      const response = await axios.post(`/api/users/${userId}`, {
         currentUserId,
       });
       setFriendStatus('sentRequest');
@@ -33,7 +35,7 @@ const FriendRequestButton = ({ userId, currentUserId, isFriend, hasSentRequest }
   // Function to handle canceling a friend request
   const cancelFriendRequest = async () => {
     try {
-      const response = await axios.delete(`${usersApi}/${userId}`, {
+      const response = await axios.delete(`/api/users/${userId}`, {
         data: { currentUserId },
       });
       setFriendStatus('noRequest');

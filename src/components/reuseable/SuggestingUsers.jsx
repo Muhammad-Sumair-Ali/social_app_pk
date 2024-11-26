@@ -1,4 +1,4 @@
-import React from "react";
+'use client'
 import { useUsers } from "@/hooks/useUsers";
 import FriendRequestButton from "../User/FriendRequestButton";
 import { useAuth } from "@/context/AuthContext";

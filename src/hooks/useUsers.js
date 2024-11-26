@@ -1,9 +1,8 @@
 'use client'
-import { usersApi } from "@/helper/apiRoutes";
 import { useEffect, useState } from "react";;
-import api from "@/helper/api";
 import { useAuth } from "@/context/AuthContext";
 import Cookies from "js-cookie";
+import axios from "axios";
 
 export function useUsers(id) {
     const {user} = useAuth()
@@ -11,7 +10,7 @@ export function useUsers(id) {
   
     const currentUser = async () => {
       try {
-        const response = await api.get(`${authApi}/currentuser`);
+        const response = await axios.get(`/api/auth/currentuser`);
         console.log("CurrentUser LoggedIn =>", response.data);
         
     
@@ -30,7 +29,7 @@ export function useUsers(id) {
         //   throw new Error('No token found');
         // }
     
-        const response = await api.get(`${usersApi}/allusers`, {
+        const response = await axios.get(`/api/users/allusers`, {
           headers: {
             Authorization: `Bearer ${ user.token || token}`,
           },

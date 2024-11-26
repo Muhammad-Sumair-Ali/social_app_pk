@@ -1,4 +1,4 @@
-import React from "react";
+'use client'
 import { useUsers } from "@/hooks/useUsers";
 import { useAuth } from "@/context/AuthContext";
 import Avatar from '@/assets/avtar.png'

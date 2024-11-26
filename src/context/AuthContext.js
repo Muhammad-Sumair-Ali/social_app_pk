@@ -1,7 +1,7 @@
 'use client';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
-import { authApi } from '@/helper/apiRoutes'; 
+ 
 
 const AuthContext = createContext(undefined);
 
@@ -18,7 +18,7 @@ export const AuthProvider = ({ children }) => {
     
         const currentUser = async () => {
             try {
-                const response = await fetch(`${authApi}/currentuser`, {
+                const response = await fetch(`/api/auth/currentuser`, {
                     method: 'GET',
                     headers: {
                         'Authorization': `Bearer ${token}`,

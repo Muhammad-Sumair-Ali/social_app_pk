@@ -2,8 +2,9 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-hot-toast';
 import { useForm } from 'react-hook-form';
-import api from "@/helper/api";
-import { authApi } from "@/helper/apiRoutes";
+import axios from 'axios';
+
+i
 
 export function useAuthentication() {
   const router = useRouter();
@@ -15,7 +16,7 @@ export function useAuthentication() {
   const login = async (data) => {
     try {
       setLoading(true);
-      const response = await api.post(`${authApi}/login`, data); 
+      const response = await axios.post('/api/auth/login', data); 
       console.log("response => ", response)
       if (response.data.token) {
         toast.success('Login successful!');
@@ -32,7 +33,7 @@ export function useAuthentication() {
   const signup = async (data) => {
     try {
       setLoading(true);
-      const response = await api.post(`${authApi}/register`, data); 
+      const response = await axios.post('/api/auth/register', data); 
       console.log("response => ", response)
       if (response.data.token) {
         toast.success('user register successfull!');
@@ -48,7 +49,7 @@ export function useAuthentication() {
 
   const currentUser = async () => {
     try {
-      const response = await api.get(`${authApi}/currentuser`);
+      const response = await axios.get('/api/auth/currentuser');
       // console.log("CurrentUser LoggedIn => " ,response)
       // setCurrentUserLoggedIn(response.data)
       return response;
@@ -59,7 +60,7 @@ export function useAuthentication() {
 
   const logoutUser = async () => {
     try {
-      const response = await api.post(`${authApi}/logout`);
+      const response = await axios.post('/api/auth/logout');
       if (response.data.message) {
         toast.success('Logged out successfully');
        

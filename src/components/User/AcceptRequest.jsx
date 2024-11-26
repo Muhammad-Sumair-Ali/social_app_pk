@@ -1,7 +1,8 @@
+'use client'
+
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
-import { usersApi } from '@/helper/apiRoutes'; 
 import { useAuth } from '@/context/AuthContext';
 import useFetchReceivedRequests from '@/hooks/useFetchRecivedReqs';
 
@@ -27,7 +28,7 @@ const FriendAcceptRequestButton = ({ userId, currentUserId, hasReceivedRequest }
   // Accept Friend Request
   const acceptFriendRequest = async () => {
     try {
-      const response = await axios.put(`${usersApi}/${userId}`, {
+      const response = await axios.put(`/api/users/${userId}`, {
         currentUserId,
       });
       setFriendStatus('friends');
@@ -40,7 +41,7 @@ const FriendAcceptRequestButton = ({ userId, currentUserId, hasReceivedRequest }
   // Decline Friend Request
   const declineFriendRequest = async () => {
       try {
-          const response = await axios.delete(`${usersApi}/${userId}`, {
+          const response = await axios.delete(`/api/users/${userId}`, {
               data: { currentUserId },
             });
             setFriendStatus('declined');

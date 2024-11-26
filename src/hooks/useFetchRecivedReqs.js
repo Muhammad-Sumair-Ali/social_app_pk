@@ -31,7 +31,7 @@ const useFetchReceivedRequests = (receivedRequests) => {
 
       // Fetch all users by ID in receivedRequests
       const requests = receivedRequests.map((id) =>
-        axios.get(`${usersApi}/${id}`, {
+        axios.get(`/api/users/${id}`, {
           headers: {
             Authorization: `Bearer ${token || user.token}`,
           },
